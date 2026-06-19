@@ -1,0 +1,1128 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>阮茹佳个人作品集 / Dream Archive</title>
+
+  <style>
+    :root {
+      --home-bg: url("assets/home-bg.png");
+      --gallery-bg: url("assets/gallery-bg.png");
+
+      --text-main: #fff8ff;
+      --text-soft: rgba(255, 248, 255, 0.72);
+      --text-faint: rgba(255, 248, 255, 0.48);
+
+      --green: #b8f27d;
+      --purple: #b9a7ff;
+      --pink: #f1bed8;
+
+      --glass-bg: rgba(255, 255, 255, 0.12);
+      --glass-bg-soft: rgba(255, 255, 255, 0.055);
+      --glass-border: rgba(255, 255, 255, 0.38);
+      --glass-border-soft: rgba(255, 255, 255, 0.18);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      min-height: 100vh;
+      font-family:
+        "Inter",
+        "Helvetica Neue",
+        "PingFang SC",
+        "Microsoft YaHei",
+        sans-serif;
+      color: var(--text-main);
+      background: #0b0a13;
+      overflow-x: hidden;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      z-index: 999;
+      pointer-events: none;
+      opacity: 0.12;
+      background-image:
+        radial-gradient(rgba(255, 255, 255, 0.35) 0.6px, transparent 0.6px);
+      background-size: 3px 3px;
+      mix-blend-mode: overlay;
+    }
+
+    /* 顶部导航 */
+    .site-header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 100;
+      width: 100%;
+      padding: 24px 44px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background:
+        linear-gradient(
+          to bottom,
+          rgba(10, 10, 18, 0.48),
+          rgba(10, 10, 18, 0)
+        );
+      backdrop-filter: blur(8px);
+    }
+
+    .logo {
+      font-size: 13px;
+      letter-spacing: 0.24em;
+      text-transform: uppercase;
+      color: rgba(255, 248, 255, 0.9);
+    }
+
+    .nav {
+      display: flex;
+      gap: 28px;
+      font-size: 12px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+    }
+
+    .nav a {
+      color: rgba(255, 248, 255, 0.68);
+      transition: color 0.3s ease, opacity 0.3s ease;
+    }
+
+    .nav a:hover {
+      color: var(--green);
+    }
+
+    /* 首页 */
+    .hero {
+      position: relative;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      overflow: hidden;
+      background:
+        linear-gradient(
+          90deg,
+          rgba(9, 9, 16, 0.58) 0%,
+          rgba(9, 9, 16, 0.34) 45%,
+          rgba(9, 9, 16, 0.18) 100%
+        ),
+        radial-gradient(circle at 22% 30%, rgba(185, 167, 255, 0.28), transparent 32%),
+        radial-gradient(circle at 76% 70%, rgba(241, 190, 216, 0.22), transparent 38%),
+        var(--home-bg) center / cover no-repeat;
+    }
+
+    .hero::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      background:
+        radial-gradient(circle at 20% 20%, rgba(255, 255, 255, 0.18), transparent 30%),
+        radial-gradient(circle at 72% 55%, rgba(184, 242, 125, 0.12), transparent 32%),
+        linear-gradient(
+          to bottom,
+          rgba(8, 7, 15, 0.08),
+          rgba(8, 7, 15, 0.4)
+        );
+      pointer-events: none;
+      mix-blend-mode: screen;
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: 2;
+      pointer-events: none;
+      background:
+        radial-gradient(circle at center, transparent 42%, rgba(8, 7, 15, 0.36) 100%);
+    }
+
+    .hero-inner {
+      position: relative;
+      z-index: 5;
+      width: min(1180px, calc(100% - 80px));
+      margin: 0 auto;
+      padding-top: 84px;
+      display: grid;
+      grid-template-columns: minmax(0, 1.15fr) minmax(320px, 0.85fr);
+      gap: 64px;
+      align-items: center;
+    }
+
+    .kicker {
+      display: block;
+      margin-bottom: 22px;
+      font-size: 11px;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: var(--green);
+      text-shadow:
+        0 0 12px rgba(184, 242, 125, 0.55),
+        0 0 28px rgba(185, 167, 255, 0.45);
+    }
+
+    .hero-title {
+      font-size: clamp(58px, 9vw, 128px);
+      line-height: 0.9;
+      font-weight: 500;
+      letter-spacing: -0.08em;
+      color: rgba(255, 248, 255, 0.96);
+      text-shadow:
+        0 0 36px rgba(185, 167, 255, 0.48),
+        0 0 72px rgba(241, 190, 216, 0.3),
+        0 0 90px rgba(0, 0, 0, 0.5);
+    }
+
+    .hero-title span {
+      display: block;
+    }
+
+    .hero-desc {
+      max-width: 700px;
+      margin-top: 32px;
+      font-size: 14px;
+      line-height: 1.95;
+      letter-spacing: 0.05em;
+      color: rgba(255, 248, 255, 0.78);
+      text-shadow: 0 0 20px rgba(0, 0, 0, 0.42);
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      margin-top: 36px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      height: 46px;
+      min-width: 150px;
+      padding: 0 22px;
+      border: 1px solid rgba(255, 255, 255, 0.32);
+      background: rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(14px);
+      color: rgba(255, 248, 255, 0.88);
+      font-size: 12px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      transition:
+        transform 0.35s ease,
+        color 0.35s ease,
+        border-color 0.35s ease,
+        background 0.35s ease,
+        box-shadow 0.35s ease;
+    }
+
+    .btn:hover {
+      transform: translateY(-3px);
+      color: var(--green);
+      border-color: rgba(184, 242, 125, 0.78);
+      background: rgba(255, 255, 255, 0.12);
+      box-shadow:
+        0 0 24px rgba(184, 242, 125, 0.25),
+        0 0 50px rgba(185, 167, 255, 0.2);
+    }
+
+    /* 个人信息卡片 */
+    .profile-card {
+      position: relative;
+      padding: 34px;
+      border: 1.4px solid rgba(255, 255, 255, 0.42);
+      background:
+        linear-gradient(
+          135deg,
+          rgba(255, 255, 255, 0.18),
+          rgba(255, 255, 255, 0.06)
+        );
+      backdrop-filter: blur(18px);
+      box-shadow:
+        0 0 34px rgba(185, 167, 255, 0.22),
+        0 0 72px rgba(241, 190, 216, 0.14),
+        0 26px 54px rgba(0, 0, 0, 0.18);
+      overflow: hidden;
+    }
+
+    .profile-card::before {
+      content: "";
+      position: absolute;
+      inset: 14px;
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      pointer-events: none;
+    }
+
+    .profile-card::after {
+      content: "";
+      position: absolute;
+      right: -70px;
+      top: -70px;
+      width: 210px;
+      height: 210px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(184, 242, 125, 0.24), transparent 65%);
+      filter: blur(4px);
+      pointer-events: none;
+    }
+
+    .profile-kicker {
+      position: relative;
+      z-index: 2;
+      display: block;
+      margin-bottom: 16px;
+      font-size: 10px;
+      letter-spacing: 0.26em;
+      text-transform: uppercase;
+      color: var(--green);
+      text-shadow: 0 0 16px rgba(184, 242, 125, 0.48);
+    }
+
+    .profile-card h2 {
+      position: relative;
+      z-index: 2;
+      margin-bottom: 28px;
+      font-size: clamp(28px, 3vw, 42px);
+      line-height: 1;
+      font-weight: 500;
+      letter-spacing: -0.06em;
+      color: rgba(255, 248, 255, 0.96);
+      text-shadow: 0 0 22px rgba(185, 167, 255, 0.42);
+    }
+
+    .profile-list {
+      position: relative;
+      z-index: 2;
+      display: grid;
+      gap: 18px;
+    }
+
+    .profile-item {
+      display: flex;
+      justify-content: space-between;
+      gap: 22px;
+      padding-bottom: 14px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.18);
+    }
+
+    .profile-item span {
+      flex-shrink: 0;
+      font-size: 12px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: rgba(255, 248, 255, 0.52);
+    }
+
+    .profile-item strong {
+      font-size: 15px;
+      font-weight: 400;
+      letter-spacing: 0.08em;
+      text-align: right;
+      color: rgba(255, 248, 255, 0.92);
+    }
+
+    .profile-note {
+      position: relative;
+      z-index: 2;
+      margin-top: 26px;
+      font-size: 11px;
+      line-height: 1.8;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: rgba(255, 248, 255, 0.5);
+    }
+
+    /* 作品集展览区 */
+    .gallery-section {
+      position: relative;
+      min-height: 100vh;
+      padding: 120px 44px 132px;
+      overflow: hidden;
+      background:
+        linear-gradient(
+          to bottom,
+          rgba(8, 7, 14, 0.26),
+          rgba(8, 7, 14, 0.46)
+        ),
+        radial-gradient(circle at 20% 18%, rgba(185, 167, 255, 0.2), transparent 32%),
+        radial-gradient(circle at 78% 76%, rgba(241, 190, 216, 0.18), transparent 36%),
+        var(--gallery-bg) center / cover no-repeat;
+      background-attachment: fixed;
+    }
+
+    .gallery-section::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      pointer-events: none;
+      background:
+        linear-gradient(
+          to bottom,
+          rgba(8, 7, 14, 0.22),
+          rgba(8, 7, 14, 0.62)
+        ),
+        radial-gradient(circle at center, transparent 35%, rgba(8, 7, 14, 0.38) 100%);
+    }
+
+    .gallery-section::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: 2;
+      pointer-events: none;
+      background:
+        radial-gradient(circle at 15% 30%, rgba(184, 242, 125, 0.12), transparent 24%),
+        radial-gradient(circle at 80% 25%, rgba(255, 255, 255, 0.12), transparent 26%);
+      mix-blend-mode: screen;
+    }
+
+    .section-inner {
+      position: relative;
+      z-index: 5;
+      width: min(1180px, 100%);
+      margin: 0 auto;
+    }
+
+    .section-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      gap: 42px;
+      margin-bottom: 46px;
+    }
+
+    .section-label {
+      display: block;
+      margin-bottom: 14px;
+      font-size: 11px;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: var(--green);
+      text-shadow:
+        0 0 12px rgba(184, 242, 125, 0.5),
+        0 0 28px rgba(185, 167, 255, 0.36);
+    }
+
+    .section-title {
+      font-size: clamp(40px, 5.8vw, 84px);
+      line-height: 0.96;
+      font-weight: 400;
+      letter-spacing: -0.07em;
+      color: rgba(255, 248, 255, 0.96);
+      text-shadow:
+        0 0 34px rgba(185, 167, 255, 0.4),
+        0 0 62px rgba(241, 190, 216, 0.25);
+    }
+
+    .section-desc {
+      max-width: 510px;
+      font-size: 13px;
+      line-height: 1.85;
+      letter-spacing: 0.05em;
+      color: rgba(255, 248, 255, 0.76);
+      text-align: right;
+      text-shadow: 0 0 18px rgba(0, 0, 0, 0.36);
+    }
+
+    .works-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 34px;
+    }
+
+    .work-card,
+    .empty-work {
+      position: relative;
+      border: 1.4px solid rgba(255, 255, 255, 0.34);
+      background:
+        linear-gradient(
+          135deg,
+          rgba(255, 255, 255, 0.16),
+          rgba(255, 255, 255, 0.055)
+        );
+      backdrop-filter: blur(14px);
+      overflow: hidden;
+      box-shadow:
+        0 20px 44px rgba(0, 0, 0, 0.16),
+        0 0 30px rgba(185, 167, 255, 0.14);
+      transition:
+        transform 0.38s ease,
+        border-color 0.38s ease,
+        box-shadow 0.38s ease,
+        background 0.38s ease;
+    }
+
+    .work-card {
+      display: block;
+      padding: 16px;
+    }
+
+    .work-card::before,
+    .empty-work::before {
+      content: "";
+      position: absolute;
+      inset: 12px;
+      z-index: 4;
+      border: 1px solid rgba(255, 255, 255, 0.13);
+      pointer-events: none;
+    }
+
+    .work-card:hover,
+    .empty-work:hover {
+      transform: translateY(-7px);
+      border-color: rgba(184, 242, 125, 0.72);
+      background:
+        linear-gradient(
+          135deg,
+          rgba(255, 255, 255, 0.2),
+          rgba(255, 255, 255, 0.075)
+        );
+      box-shadow:
+        0 0 26px rgba(184, 242, 125, 0.18),
+        0 0 58px rgba(185, 167, 255, 0.24),
+        0 28px 56px rgba(0, 0, 0, 0.24);
+    }
+
+    .work-card.no-link {
+      cursor: default;
+    }
+
+    .work-status {
+      position: absolute;
+      top: 28px;
+      right: 28px;
+      z-index: 8;
+      padding: 8px 10px;
+      border: 1px solid rgba(255, 255, 255, 0.22);
+      background: rgba(255, 255, 255, 0.13);
+      backdrop-filter: blur(12px);
+      font-size: 10px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: rgba(255, 248, 255, 0.72);
+    }
+
+    .work-card:not(.no-link) .work-status {
+      color: var(--green);
+      border-color: rgba(184, 242, 125, 0.44);
+    }
+
+    .work-thumb {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      overflow: hidden;
+      background:
+        radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.12), transparent 68%),
+        rgba(255, 255, 255, 0.08);
+    }
+
+    .work-thumb img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition:
+        transform 0.55s ease,
+        filter 0.55s ease;
+    }
+
+    .work-thumb.contain img {
+      object-fit: contain;
+      padding: 0;
+    }
+
+    .work-card:hover .work-thumb img {
+      transform: scale(1.045);
+      filter:
+        drop-shadow(0 0 18px rgba(185, 167, 255, 0.28));
+    }
+
+    .work-info {
+      position: relative;
+      z-index: 6;
+      padding: 18px 2px 4px;
+    }
+
+    .work-info span {
+      display: block;
+      margin-bottom: 10px;
+      font-size: 11px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--green);
+      text-shadow: 0 0 12px rgba(184, 242, 125, 0.36);
+    }
+
+    .work-info h3 {
+      margin-bottom: 8px;
+      font-size: 24px;
+      font-weight: 500;
+      letter-spacing: -0.03em;
+      color: rgba(255, 248, 255, 0.96);
+      text-shadow: 0 0 16px rgba(185, 167, 255, 0.25);
+    }
+
+    .work-info p {
+      font-size: 12px;
+      line-height: 1.7;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: rgba(255, 248, 255, 0.66);
+    }
+
+    /* 空白作品方框 */
+    .empty-work {
+      min-height: 360px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 28px;
+    }
+
+    .empty-content {
+      position: relative;
+      z-index: 6;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 18px;
+      text-align: center;
+    }
+
+    .empty-cross {
+      position: relative;
+      width: 48px;
+      height: 48px;
+      opacity: 0.45;
+      transition: transform 0.35s ease, opacity 0.35s ease;
+    }
+
+    .empty-cross::before,
+    .empty-cross::after {
+      content: "";
+      position: absolute;
+      background: rgba(255, 255, 255, 0.72);
+      box-shadow:
+        0 0 14px rgba(185, 167, 255, 0.4),
+        0 0 26px rgba(184, 242, 125, 0.16);
+    }
+
+    .empty-cross::before {
+      left: 50%;
+      top: 0;
+      width: 1px;
+      height: 100%;
+      transform: translateX(-50%);
+    }
+
+    .empty-cross::after {
+      top: 50%;
+      left: 0;
+      width: 100%;
+      height: 1px;
+      transform: translateY(-50%);
+    }
+
+    .empty-work:hover .empty-cross {
+      transform: scale(1.14);
+      opacity: 0.8;
+    }
+
+    .empty-content span {
+      font-size: 11px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: rgba(184, 242, 125, 0.78);
+      text-shadow: 0 0 12px rgba(184, 242, 125, 0.32);
+    }
+
+    .empty-content p {
+      font-size: 12px;
+      line-height: 1.8;
+      letter-spacing: 0.1em;
+      color: rgba(255, 248, 255, 0.58);
+    }
+
+    /* 关于区域 */
+    .about-section {
+      position: relative;
+      padding: 110px 44px 120px;
+      background:
+        radial-gradient(circle at 20% 15%, rgba(185, 167, 255, 0.18), transparent 32%),
+        radial-gradient(circle at 78% 70%, rgba(241, 190, 216, 0.14), transparent 34%),
+        #090814;
+    }
+
+    .about-card {
+      position: relative;
+      width: min(1180px, 100%);
+      margin: 0 auto;
+      padding: 40px;
+      border: 1.4px solid rgba(255, 255, 255, 0.26);
+      background:
+        linear-gradient(
+          135deg,
+          rgba(255, 255, 255, 0.08),
+          rgba(255, 255, 255, 0.025)
+        );
+      backdrop-filter: blur(12px);
+      box-shadow:
+        0 0 34px rgba(185, 167, 255, 0.14),
+        0 24px 54px rgba(0, 0, 0, 0.24);
+    }
+
+    .about-card::before {
+      content: "";
+      position: absolute;
+      inset: 14px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      pointer-events: none;
+    }
+
+    .about-grid {
+      position: relative;
+      z-index: 2;
+      display: grid;
+      grid-template-columns: minmax(0, 0.7fr) minmax(0, 1.3fr);
+      gap: 42px;
+    }
+
+    .about-title h2 {
+      font-size: clamp(34px, 4vw, 58px);
+      line-height: 0.96;
+      font-weight: 400;
+      letter-spacing: -0.06em;
+    }
+
+    .about-text p {
+      font-size: 14px;
+      line-height: 2;
+      letter-spacing: 0.05em;
+      color: rgba(255, 248, 255, 0.72);
+    }
+
+    .footer {
+      padding: 34px 44px;
+      background: #090814;
+      border-top: 1px solid rgba(255, 255, 255, 0.12);
+      color: rgba(255, 248, 255, 0.48);
+      font-size: 11px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+    }
+
+    .footer-inner {
+      width: min(1180px, 100%);
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+    }
+
+    .fade-in {
+      opacity: 0;
+      transform: translateY(18px);
+      animation: fadeIn 1s ease forwards;
+    }
+
+    .delay-1 {
+      animation-delay: 0.16s;
+    }
+
+    .delay-2 {
+      animation-delay: 0.32s;
+    }
+
+    .delay-3 {
+      animation-delay: 0.48s;
+    }
+
+    @keyframes fadeIn {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @media (max-width: 980px) {
+      .hero-inner {
+        grid-template-columns: 1fr;
+        gap: 52px;
+        padding-top: 140px;
+        padding-bottom: 90px;
+      }
+
+      .profile-card {
+        max-width: 560px;
+      }
+
+      .section-head {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .section-desc {
+        text-align: left;
+      }
+
+      .works-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .about-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 620px) {
+      .site-header {
+        padding: 20px 22px;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+      }
+
+      .nav {
+        gap: 16px;
+        font-size: 10px;
+      }
+
+      .hero {
+        align-items: flex-start;
+      }
+
+      .hero-inner {
+        width: calc(100% - 44px);
+        padding-top: 152px;
+        padding-bottom: 80px;
+      }
+
+      .hero-title {
+        font-size: 52px;
+      }
+
+      .hero-desc {
+        font-size: 13px;
+      }
+
+      .profile-card {
+        padding: 28px 24px;
+      }
+
+      .profile-item {
+        flex-direction: column;
+        gap: 8px;
+      }
+
+      .profile-item strong {
+        text-align: left;
+      }
+
+      .gallery-section {
+        padding: 92px 22px 100px;
+        background-attachment: scroll;
+      }
+
+      .works-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .work-card {
+        padding: 12px;
+      }
+
+      .empty-work {
+        min-height: 260px;
+      }
+
+      .about-section {
+        padding: 90px 22px 96px;
+      }
+
+      .about-card {
+        padding: 30px 24px;
+      }
+
+      .footer {
+        padding: 28px 22px;
+      }
+
+      .footer-inner {
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header class="site-header">
+    <a href="#home" class="logo">Dream Archive</a>
+
+    <nav class="nav">
+      <a href="#home">Home</a>
+      <a href="#gallery">Works</a>
+      <a href="#about">About</a>
+    </nav>
+  </header>
+
+  <main>
+    <!-- 首页 -->
+    <section class="hero" id="home">
+      <div class="hero-inner">
+
+        <div class="hero-copy">
+          <span class="kicker fade-in">Personal Portfolio / Dream Archive</span>
+
+          <h1 class="hero-title fade-in delay-1">
+            <span>个人</span>
+            <span>作品集</span>
+          </h1>
+
+          <p class="hero-desc fade-in delay-2">
+            这里展示了阮茹佳在数字媒体技术方向的个人创作实践。
+            作品从视觉设计、游戏设计、数字影像与创意表达出发，
+            记录学习过程中的探索、尝试与成长。
+          </p>
+
+          <div class="hero-actions fade-in delay-2">
+            <a class="btn" href="#gallery">Enter Works</a>
+            <a class="btn" href="./project-01.html">View Case 01</a>
+          </div>
+        </div>
+
+        <aside class="profile-card fade-in delay-3">
+          <span class="profile-kicker">Portfolio Owner</span>
+
+          <h2>个人信息</h2>
+
+          <div class="profile-list">
+            <div class="profile-item">
+              <span>姓名</span>
+              <strong>阮茹佳</strong>
+            </div>
+
+            <div class="profile-item">
+              <span>学校</span>
+              <strong>杭州电子科技大学</strong>
+            </div>
+
+            <div class="profile-item">
+              <span>专业</span>
+              <strong>数字媒体技术</strong>
+            </div>
+
+            <div class="profile-item">
+              <span>年龄</span>
+              <strong>20岁</strong>
+            </div>
+          </div>
+
+          <p class="profile-note">
+            Digital Media Technology / Game Design / Visual Portfolio
+          </p>
+        </aside>
+
+      </div>
+    </section>
+
+    <!-- 作品集展览区 -->
+    <section class="gallery-section" id="gallery">
+      <div class="section-inner">
+
+        <div class="section-head">
+          <div>
+            <span class="section-label">Works Archive</span>
+            <h2 class="section-title">作品集展览</h2>
+          </div>
+
+          <p class="section-desc">
+            这里展示个人作品集中的主要创作案例。Case 01 可点击进入详情页；
+            其他作品目前作为图标与视觉作品展示，后方空白方框用于之后继续添加作品。
+          </p>
+        </div>
+
+        <div class="works-grid">
+
+          <!-- Case 01：可点击跳转 -->
+          <a href="./project-01.html" class="work-card">
+            <div class="work-status">Open Case</div>
+
+            <div class="work-thumb">
+              <img src="assets/work-01.png" alt="霓虹妖谭">
+            </div>
+
+            <div class="work-info">
+              <span>Case 01</span>
+              <h3>霓虹妖谭</h3>
+              <p>Game Design</p>
+            </div>
+          </a>
+
+          <!-- Case 02：只展示 -->
+          <div class="work-card no-link">
+            <div class="work-status">Display Only</div>
+
+            <div class="work-thumb contain">
+              <img src="assets/图17.png" alt="GreenVein">
+            </div>
+
+            <div class="work-info">
+              <span>Case 02</span>
+              <h3>GreenVein</h3>
+              <p>Brand Icon Design</p>
+            </div>
+          </div>
+
+          <!-- Case 03：只展示 -->
+          <div class="work-card no-link">
+            <div class="work-status">Display Only</div>
+
+            <div class="work-thumb contain">
+              <img src="assets/图18.png" alt="早安咖啡">
+            </div>
+
+            <div class="work-info">
+              <span>Case 03</span>
+              <h3>早安咖啡</h3>
+              <p>Morning C / Logo Design</p>
+            </div>
+          </div>
+
+          <!-- 空白作品方框 01 -->
+          <div class="empty-work">
+            <div class="empty-content">
+              <div class="empty-cross"></div>
+              <span>Pending Case</span>
+              <p>作品待添加</p>
+            </div>
+          </div>
+
+          <!-- 空白作品方框 02 -->
+          <div class="empty-work">
+            <div class="empty-content">
+              <div class="empty-cross"></div>
+              <span>Pending Case</span>
+              <p>作品待添加</p>
+            </div>
+          </div>
+
+          <!-- 空白作品方框 03 -->
+          <div class="empty-work">
+            <div class="empty-content">
+              <div class="empty-cross"></div>
+              <span>Pending Case</span>
+              <p>作品待添加</p>
+            </div>
+          </div>
+
+          <!-- 空白作品方框 04 -->
+          <div class="empty-work">
+            <div class="empty-content">
+              <div class="empty-cross"></div>
+              <span>Pending Case</span>
+              <p>作品待添加</p>
+            </div>
+          </div>
+
+          <!-- 空白作品方框 05 -->
+          <div class="empty-work">
+            <div class="empty-content">
+              <div class="empty-cross"></div>
+              <span>Pending Case</span>
+              <p>作品待添加</p>
+            </div>
+          </div>
+
+          <!-- 空白作品方框 06 -->
+          <div class="empty-work">
+            <div class="empty-content">
+              <div class="empty-cross"></div>
+              <span>Pending Case</span>
+              <p>作品待添加</p>
+            </div>
+          </div>
+
+          <!-- 空白作品方框 07 -->
+          <div class="empty-work">
+            <div class="empty-content">
+              <div class="empty-cross"></div>
+              <span>Pending Case</span>
+              <p>作品待添加</p>
+            </div>
+          </div>
+
+          <!-- 空白作品方框 08 -->
+          <div class="empty-work">
+            <div class="empty-content">
+              <div class="empty-cross"></div>
+              <span>Pending Case</span>
+              <p>作品待添加</p>
+            </div>
+          </div>
+
+          <!-- 空白作品方框 09 -->
+          <div class="empty-work">
+            <div class="empty-content">
+              <div class="empty-cross"></div>
+              <span>Pending Case</span>
+              <p>作品待添加</p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- 关于区域 -->
+    <section class="about-section" id="about">
+      <div class="about-card">
+        <div class="about-grid">
+
+          <div class="about-title">
+            <span class="section-label">About Portfolio</span>
+            <h2>数字媒体<br>创作档案</h2>
+          </div>
+
+          <div class="about-text">
+            <p>
+              <p>
+                本作品集聚焦数字媒体技术方向的游戏设计、视觉设计与图像表达实践。
+                记录个人在数字创作中的探索路径、视觉语言与阶段性成果。
+              </p>
+            </p>
+          </div>
+
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      <span>Ruan Rujia Portfolio</span>
+      <span>Digital Media Technology / Game Design / Visual Design</span>
+    </div>
+  </footer>
+</body>
+</html>

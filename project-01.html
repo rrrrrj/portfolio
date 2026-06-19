@@ -1,0 +1,913 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>霓京 / UI Game Design</title>
+
+  <style>
+    :root {
+      --bg-dark: #080711;
+      --text-main: #f8f1ff;
+      --text-soft: rgba(248, 241, 255, 0.68);
+      --text-faint: rgba(248, 241, 255, 0.42);
+      --acid-green: #b8f27d;
+      --dream-purple: #b9a7ff;
+      --mist-pink: #e8b8d0;
+      --gold: #f3c76a;
+      --glass-border: rgba(255, 255, 255, 0.34);
+      --glass-border-soft: rgba(255, 255, 255, 0.16);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      min-height: 100vh;
+      font-family:
+        "Inter",
+        "Helvetica Neue",
+        "PingFang SC",
+        "Microsoft YaHei",
+        sans-serif;
+      color: var(--text-main);
+      background:
+        radial-gradient(circle at 22% 18%, rgba(185, 167, 255, 0.24), transparent 28%),
+        radial-gradient(circle at 78% 72%, rgba(232, 184, 208, 0.18), transparent 32%),
+        radial-gradient(circle at 50% 50%, rgba(184, 242, 125, 0.08), transparent 34%),
+        #080711;
+      overflow-x: hidden;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      z-index: 999;
+      pointer-events: none;
+      opacity: 0.12;
+      background-image:
+        radial-gradient(rgba(255, 255, 255, 0.32) 0.6px, transparent 0.6px);
+      background-size: 3px 3px;
+      mix-blend-mode: overlay;
+    }
+
+    body::after {
+      content: "";
+      position: fixed;
+      inset: 0;
+      z-index: 1;
+      pointer-events: none;
+      background:
+        radial-gradient(circle at center, transparent 48%, rgba(8, 7, 17, 0.46) 100%);
+    }
+
+    /* 顶部导航 */
+    .site-header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 50;
+      width: 100%;
+      padding: 24px 42px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      color: rgba(248, 241, 255, 0.86);
+    }
+
+    .logo {
+      font-size: 13px;
+      letter-spacing: 0.24em;
+      text-transform: uppercase;
+    }
+
+    .nav {
+      display: flex;
+      gap: 26px;
+      font-size: 12px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+    }
+
+    .nav a {
+      opacity: 0.72;
+      transition: opacity 0.3s ease, color 0.3s ease;
+    }
+
+    .nav a:hover {
+      opacity: 1;
+      color: var(--acid-green);
+    }
+
+    /* 主体 */
+    .project-page {
+      position: relative;
+      z-index: 5;
+      min-height: 100vh;
+      padding: 132px 42px 80px;
+    }
+
+    .project-inner {
+      width: min(1280px, 100%);
+      margin: 0 auto;
+    }
+
+    .project-label {
+      display: block;
+      margin-bottom: 18px;
+      font-size: 11px;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: var(--acid-green);
+      text-shadow:
+        0 0 10px rgba(184, 242, 125, 0.45),
+        0 0 24px rgba(185, 167, 255, 0.35);
+    }
+
+    .project-title {
+      max-width: 980px;
+      font-size: clamp(48px, 7vw, 112px);
+      line-height: 0.92;
+      font-weight: 500;
+      letter-spacing: -0.075em;
+      color: rgba(255, 248, 255, 0.92);
+      text-shadow:
+        0 0 34px rgba(185, 167, 255, 0.34),
+        0 0 58px rgba(232, 184, 208, 0.22);
+    }
+
+    .project-title span {
+      display: block;
+    }
+
+    .project-subtitle {
+      max-width: 760px;
+      margin-top: 28px;
+      font-size: 14px;
+      line-height: 1.9;
+      letter-spacing: 0.04em;
+      color: var(--text-soft);
+    }
+
+    /* 顶部展示区域 */
+    .project-display {
+      margin-top: 74px;
+      display: grid;
+      grid-template-columns: minmax(0, 1.25fr) minmax(320px, 0.75fr);
+      gap: 46px;
+      align-items: start;
+    }
+
+    .artwork-frame {
+      position: relative;
+      width: 100%;
+      min-height: 520px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 28px;
+
+      border: 1.5px solid var(--glass-border);
+      background: rgba(255, 255, 255, 0.025);
+      backdrop-filter: blur(4px);
+
+      overflow: hidden;
+
+      box-shadow:
+        0 0 40px rgba(185, 167, 255, 0.16),
+        0 30px 70px rgba(0, 0, 0, 0.24);
+    }
+
+    .artwork-frame::before {
+      content: "";
+      position: absolute;
+      inset: 14px;
+      border: 1px solid var(--glass-border-soft);
+      pointer-events: none;
+      z-index: 3;
+    }
+
+    .artwork-frame::after {
+      content: "";
+      position: absolute;
+      inset: -2px;
+      pointer-events: none;
+      opacity: 0.85;
+      background:
+        radial-gradient(circle at 48% 45%, rgba(184, 242, 125, 0.12), transparent 48%),
+        radial-gradient(circle at 56% 56%, rgba(185, 167, 255, 0.14), transparent 58%);
+      z-index: -1;
+    }
+
+    .main-artwork {
+      position: relative;
+      z-index: 2;
+      display: block;
+      width: 100%;
+      height: auto;
+      max-height: 660px;
+      object-fit: contain;
+      background: transparent;
+
+      filter:
+        drop-shadow(0 0 20px rgba(185, 167, 255, 0.42))
+        drop-shadow(0 22px 28px rgba(0, 0, 0, 0.22));
+    }
+
+    /* 右侧信息 */
+    .project-info {
+      display: flex;
+      flex-direction: column;
+      gap: 22px;
+    }
+
+    .info-block {
+      position: relative;
+      padding: 24px 0 26px;
+      border-top: 1px solid rgba(255, 255, 255, 0.22);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      background: none;
+      box-shadow: none;
+    }
+
+    .info-block .small {
+      display: block;
+      margin-bottom: 12px;
+      font-size: 10px;
+      letter-spacing: 0.24em;
+      text-transform: uppercase;
+      color: var(--acid-green);
+    }
+
+    .info-block h2 {
+      margin-bottom: 14px;
+      font-size: 24px;
+      font-weight: 500;
+      letter-spacing: -0.03em;
+      color: rgba(255, 248, 255, 0.92);
+      text-shadow:
+        0 0 16px rgba(185, 167, 255, 0.32);
+    }
+
+    .info-block p {
+      font-size: 13px;
+      line-height: 1.9;
+      letter-spacing: 0.04em;
+      color: var(--text-soft);
+    }
+
+    .meta-list {
+      display: grid;
+      gap: 14px;
+      margin-top: 2px;
+    }
+
+    .meta-item {
+      display: flex;
+      justify-content: space-between;
+      gap: 24px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+      font-size: 12px;
+      letter-spacing: 0.08em;
+    }
+
+    .meta-item span:first-child {
+      color: var(--text-faint);
+      text-transform: uppercase;
+    }
+
+    .meta-item span:last-child {
+      color: rgba(255, 248, 255, 0.82);
+      text-align: right;
+    }
+
+    .project-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      margin-top: 14px;
+    }
+
+    .dream-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 150px;
+      height: 46px;
+      padding: 0 22px;
+
+      border: 1px solid rgba(248, 241, 255, 0.28);
+      background: rgba(255, 255, 255, 0.035);
+      backdrop-filter: blur(12px);
+
+      color: rgba(248, 241, 255, 0.86);
+      font-size: 12px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+
+      transition:
+        transform 0.35s ease,
+        border-color 0.35s ease,
+        color 0.35s ease,
+        box-shadow 0.35s ease,
+        background 0.35s ease;
+    }
+
+    .dream-btn:hover {
+      transform: translateY(-2px);
+      border-color: rgba(184, 242, 125, 0.78);
+      color: var(--acid-green);
+      background: rgba(255, 255, 255, 0.055);
+      box-shadow:
+        0 0 24px rgba(184, 242, 125, 0.2),
+        0 0 48px rgba(185, 167, 255, 0.16);
+    }
+
+    /* 世界观文本区 */
+    .world-section {
+      margin-top: 86px;
+      display: grid;
+      grid-template-columns: minmax(0, 0.82fr) minmax(0, 1.18fr);
+      gap: 44px;
+      align-items: start;
+    }
+
+    .section-title .small {
+      display: block;
+      margin-bottom: 12px;
+      font-size: 10px;
+      letter-spacing: 0.24em;
+      text-transform: uppercase;
+      color: var(--acid-green);
+    }
+
+    .section-title h2 {
+      font-size: clamp(32px, 4vw, 58px);
+      line-height: 0.96;
+      font-weight: 400;
+      letter-spacing: -0.06em;
+      color: rgba(255, 248, 255, 0.88);
+      text-shadow:
+        0 0 24px rgba(185, 167, 255, 0.26);
+    }
+
+    .world-card {
+      position: relative;
+      padding: 34px 36px;
+      border: 1.4px solid rgba(255, 255, 255, 0.24);
+      background:
+        linear-gradient(
+          135deg,
+          rgba(255, 255, 255, 0.055),
+          rgba(255, 255, 255, 0.018)
+        );
+      backdrop-filter: blur(10px);
+      box-shadow:
+        0 0 34px rgba(185, 167, 255, 0.12),
+        0 24px 54px rgba(0, 0, 0, 0.24);
+    }
+
+    .world-card::before {
+      content: "";
+      position: absolute;
+      inset: 14px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      pointer-events: none;
+    }
+
+    .world-card p {
+      position: relative;
+      z-index: 2;
+      font-size: 14px;
+      line-height: 2;
+      letter-spacing: 0.05em;
+      color: rgba(248, 241, 255, 0.72);
+    }
+
+    .world-card strong {
+      color: rgba(255, 230, 158, 0.96);
+      font-weight: 500;
+      text-shadow: 0 0 16px rgba(243, 199, 106, 0.28);
+    }
+
+    /* UI展示区 */
+    .ui-section {
+      margin-top: 96px;
+    }
+
+    .ui-section-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 28px;
+      align-items: end;
+      margin-bottom: 34px;
+    }
+
+    .ui-section-head p {
+      max-width: 520px;
+      font-size: 13px;
+      line-height: 1.8;
+      letter-spacing: 0.04em;
+      color: var(--text-soft);
+      text-align: right;
+    }
+
+    .ui-gallery {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 34px;
+    }
+
+    .ui-shot {
+      position: relative;
+      padding: 16px;
+      border: 1.3px solid rgba(255, 255, 255, 0.26);
+      background: rgba(255, 255, 255, 0.022);
+      backdrop-filter: blur(4px);
+      overflow: hidden;
+      cursor: zoom-in;
+      transition:
+        transform 0.38s ease,
+        border-color 0.38s ease,
+        box-shadow 0.38s ease,
+        background 0.38s ease;
+    }
+
+    .ui-shot::before {
+      content: "";
+      position: absolute;
+      inset: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      pointer-events: none;
+      z-index: 3;
+    }
+
+    .ui-shot:hover {
+      transform: translateY(-6px) scale(1.015);
+      border-color: rgba(184, 242, 125, 0.72);
+      background: rgba(255, 255, 255, 0.04);
+      box-shadow:
+        0 0 24px rgba(184, 242, 125, 0.15),
+        0 0 52px rgba(185, 167, 255, 0.22),
+        0 24px 48px rgba(0, 0, 0, 0.28);
+    }
+
+    .ui-shot img {
+      display: block;
+      width: 100%;
+      height: auto;
+      object-fit: contain;
+      filter:
+        drop-shadow(0 0 16px rgba(185, 167, 255, 0.22));
+    }
+
+    .ui-caption {
+      display: flex;
+      justify-content: space-between;
+      gap: 18px;
+      margin-top: 14px;
+      font-size: 12px;
+      letter-spacing: 0.08em;
+      color: rgba(248, 241, 255, 0.64);
+    }
+
+    .ui-caption span:first-child {
+      color: var(--acid-green);
+      text-transform: uppercase;
+    }
+
+    .ui-caption span:last-child {
+      text-align: right;
+    }
+
+    .footer-space {
+      height: 40px;
+    }
+
+    /* 图片放大弹窗 */
+    .image-modal {
+      position: fixed;
+      inset: 0;
+      z-index: 200;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 42px;
+      background: rgba(4, 3, 10, 0.82);
+      backdrop-filter: blur(16px);
+    }
+
+    .image-modal.active {
+      display: flex;
+    }
+
+    .modal-img {
+      max-width: min(96vw, 1500px);
+      max-height: 88vh;
+      object-fit: contain;
+      box-shadow:
+        0 0 40px rgba(185, 167, 255, 0.34),
+        0 30px 80px rgba(0, 0, 0, 0.46);
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 28px;
+      right: 34px;
+      width: 44px;
+      height: 44px;
+      border: 1px solid rgba(255, 255, 255, 0.32);
+      background: rgba(255, 255, 255, 0.05);
+      color: rgba(255, 255, 255, 0.86);
+      font-size: 26px;
+      cursor: pointer;
+      transition: 0.3s ease;
+    }
+
+    .modal-close:hover {
+      color: var(--acid-green);
+      border-color: rgba(184, 242, 125, 0.72);
+    }
+
+    .fade-in {
+      opacity: 0;
+      transform: translateY(18px);
+      animation: fadeIn 1s ease forwards;
+    }
+
+    .delay-1 {
+      animation-delay: 0.16s;
+    }
+
+    .delay-2 {
+      animation-delay: 0.32s;
+    }
+
+    .delay-3 {
+      animation-delay: 0.48s;
+    }
+
+    @keyframes fadeIn {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @media (max-width: 1050px) {
+      .project-display {
+        grid-template-columns: 1fr;
+      }
+
+      .artwork-frame {
+        min-height: 420px;
+      }
+
+      .project-info {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 26px;
+      }
+
+      .project-actions {
+        grid-column: 1 / -1;
+      }
+
+      .world-section {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 860px) {
+      .ui-gallery {
+        grid-template-columns: 1fr;
+      }
+
+      .ui-section-head {
+        align-items: start;
+        flex-direction: column;
+      }
+
+      .ui-section-head p {
+        text-align: left;
+      }
+    }
+
+    @media (max-width: 760px) {
+      .site-header {
+        padding: 20px 22px;
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 12px;
+      }
+
+      .nav {
+        gap: 16px;
+        font-size: 10px;
+      }
+
+      .project-page {
+        padding: 128px 22px 70px;
+      }
+
+      .project-title {
+        font-size: 52px;
+      }
+
+      .project-display {
+        margin-top: 54px;
+      }
+
+      .artwork-frame {
+        min-height: 300px;
+        padding: 18px;
+      }
+
+      .project-info {
+        grid-template-columns: 1fr;
+      }
+
+      .world-card {
+        padding: 28px 24px;
+      }
+
+      .ui-shot {
+        padding: 12px;
+      }
+
+      .image-modal {
+        padding: 18px;
+      }
+
+      .modal-close {
+        top: 18px;
+        right: 18px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header class="site-header">
+    <a href="./index.html#home" class="logo">Dream Archive</a>
+
+    <nav class="nav">
+      <a href="./index.html#home">Home</a>
+      <a href="./index.html#archive">Works</a>
+      <a href="./project-01.html">Case 01</a>
+    </nav>
+  </header>
+
+  <main class="project-page">
+    <div class="project-inner">
+
+      <span class="project-label fade-in">Archive Case 01 / UI Game Design</span>
+
+      <h1 class="project-title fade-in delay-1">
+        <span>霓京</span>
+        <span>NEIKYO</span>
+      </h1>
+
+      <p class="project-subtitle fade-in delay-2">
+        一款以近未来都市、妖灵共存、抽卡契约与战斗养成为核心设定的幻想题材 UI 游戏界面设计。
+        整体视觉融合都市霓虹、神社意象、古典妖怪与赛博幻想，营造神秘、华丽且具有沉浸感的游戏体验。
+      </p>
+
+      <section class="project-display fade-in delay-3">
+        <!-- 主视觉展示 -->
+        <div class="artwork-frame">
+          <img class="main-artwork" src="assets/图6.png" alt="霓京世界观主视觉界面">
+        </div>
+
+        <!-- 作品信息 -->
+        <aside class="project-info">
+          <div class="info-block">
+            <span class="small">Statement</span>
+            <h2>作品说明</h2>
+            <p>
+              《霓京》是一个围绕抽卡、妖灵收集、角色养成与战斗出征展开的 UI 游戏界面设计项目。
+              作品尝试将近未来都市的冷光感与传统妖怪文化的神秘感结合，形成具有东方幻想色彩的游戏视觉系统。
+            </p>
+          </div>
+
+          <div class="info-block">
+            <span class="small">Information</span>
+            <h2>作品信息</h2>
+
+            <div class="meta-list">
+              <div class="meta-item">
+                <span>Title</span>
+                <span>霓京 NEIKYO</span>
+              </div>
+
+              <div class="meta-item">
+                <span>Type</span>
+                <span>UI Game Design</span>
+              </div>
+
+              <div class="meta-item">
+                <span>Theme</span>
+                <span>近未来 / 妖灵 / 抽卡</span>
+              </div>
+
+              <div class="meta-item">
+                <span>Content</span>
+                <span>10张游戏界面</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="project-actions">
+            <a class="dream-btn" href="./index.html#archive">Back to Works</a>
+            <a class="dream-btn" href="./index.html#home">Home</a>
+          </div>
+        </aside>
+      </section>
+
+      <!-- 世界观介绍 -->
+      <section class="world-section">
+        <div class="section-title">
+          <span class="small">World View</span>
+          <h2>近未来都市<br>与妖灵契约</h2>
+        </div>
+
+        <div class="world-card">
+          <p>
+            故事发生在近未来都市 <strong>「霓京」</strong>。
+            在这座城市中，人类与妖灵共存于表世界与里世界之间。
+            一种名为 <strong>「侵蚀」</strong> 的病毒正在扩散，使部分妖灵逐渐失控，
+            城市秩序也因此被打破。
+            <br><br>
+            玩家扮演 <strong>「调律者」</strong>，通过抽卡唤醒封印在古董卡牌中的古老妖灵，
+            与它们缔结契约并并肩作战。卡池中包含古典妖怪、赛博妖精与神代遗种。
+            都市霓虹与古老神社交错，玩家需要在霓虹雨夜中探索事件背后的真相。
+          </p>
+        </div>
+      </section>
+
+      <!-- 10张UI界面展示 -->
+      <section class="ui-section">
+        <div class="ui-section-head">
+          <div class="section-title">
+            <span class="small">Interface Gallery</span>
+            <h2>游戏界面展示</h2>
+          </div>
+
+          <p>
+            以下展示作品中的主要 UI 界面，包括世界观介绍、首页大厅、抽卡契约、妖灵详情、养成与功能页面等。
+            点击图片可以放大查看。
+          </p>
+        </div>
+
+        <div class="ui-gallery">
+          <!-- 01 -->
+          <div class="ui-shot">
+            <img src="assets/图6.png" alt="霓京世界观介绍界面" loading="lazy">
+            <div class="ui-caption">
+              <span>UI 01</span>
+              <span>世界观介绍</span>
+            </div>
+          </div>
+
+          <!-- 02 -->
+          <div class="ui-shot">
+            <img src="assets/图14.png" alt="霓京妖灵详情界面" loading="lazy">
+            <div class="ui-caption">
+              <span>UI 02</span>
+              <span>妖灵详情界面</span>
+            </div>
+          </div>
+
+          <!-- 03 -->
+          <div class="ui-shot">
+            <img src="assets/图15.png" alt="霓京游戏主界面" loading="lazy">
+            <div class="ui-caption">
+              <span>UI 03</span>
+              <span>游戏主界面</span>
+            </div>
+          </div>
+
+          <!-- 04 -->
+          <div class="ui-shot">
+            <img src="assets/图7.png" alt="霓京契约抽卡界面" loading="lazy">
+            <div class="ui-caption">
+              <span>UI 04</span>
+              <span>契约抽卡界面</span>
+            </div>
+          </div>
+
+          <!-- 05 -->
+          <div class="ui-shot">
+            <img src="assets/图8.png" alt="霓京UI界面设计展示五" loading="lazy">
+            <div class="ui-caption">
+              <span>UI 05</span>
+              <span>功能界面展示</span>
+            </div>
+          </div>
+
+          <!-- 06 -->
+          <div class="ui-shot">
+            <img src="assets/图9.png" alt="霓京UI界面设计展示六" loading="lazy">
+            <div class="ui-caption">
+              <span>UI 06</span>
+              <span>功能界面展示</span>
+            </div>
+          </div>
+
+          <!-- 07 -->
+          <div class="ui-shot">
+            <img src="assets/图10.png" alt="霓京UI界面设计展示七" loading="lazy">
+            <div class="ui-caption">
+              <span>UI 07</span>
+              <span>功能界面展示</span>
+            </div>
+          </div>
+
+          <!-- 08 -->
+          <div class="ui-shot">
+            <img src="assets/图11.png" alt="霓京UI界面设计展示八" loading="lazy">
+            <div class="ui-caption">
+              <span>UI 08</span>
+              <span>功能界面展示</span>
+            </div>
+          </div>
+
+          <!-- 09 -->
+          <div class="ui-shot">
+            <img src="assets/图12.png" alt="霓京UI界面设计展示九" loading="lazy">
+            <div class="ui-caption">
+              <span>UI 09</span>
+              <span>功能界面展示</span>
+            </div>
+          </div>
+
+          <!-- 10 -->
+          <div class="ui-shot">
+            <img src="assets/图13.png" alt="霓京UI界面设计展示十" loading="lazy">
+            <div class="ui-caption">
+              <span>UI 10</span>
+              <span>功能界面展示</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <div class="footer-space"></div>
+    </div>
+  </main>
+
+  <!-- 图片放大弹窗 -->
+  <div class="image-modal" id="imageModal">
+    <button class="modal-close" id="modalClose" aria-label="关闭图片预览">×</button>
+    <img class="modal-img" id="modalImg" src="" alt="放大预览图">
+  </div>
+
+  <script>
+    const modal = document.getElementById("imageModal");
+    const modalImg = document.getElementById("modalImg");
+    const modalClose = document.getElementById("modalClose");
+
+    document.querySelectorAll(".ui-shot img").forEach((img) => {
+      img.addEventListener("click", () => {
+        modal.classList.add("active");
+        modalImg.src = img.src;
+        modalImg.alt = img.alt;
+      });
+    });
+
+    modalClose.addEventListener("click", () => {
+      modal.classList.remove("active");
+      modalImg.src = "";
+    });
+
+    modal.addEventListener("click", (event) => {
+      if (event.target === modal) {
+        modal.classList.remove("active");
+        modalImg.src = "";
+      }
+    });
+
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape") {
+        modal.classList.remove("active");
+        modalImg.src = "";
+      }
+    });
+  </script>
+</body>
+</html>
